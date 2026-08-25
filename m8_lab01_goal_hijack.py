@@ -23,7 +23,8 @@ from crewai.tools import tool
 
 BANK   = os.getenv("VULNBANK_BASE", "http://10.10.0.31:8090")
 OLLAMA = os.getenv("OLLAMA_BASE",   "http://10.10.0.3:11434")
-MODEL  = os.getenv("BANKBOT_MODEL", "ollama/qwen3:latest")
+MODEL  = os.getenv("BANKBOT_MODEL", "ollama/llama3.1:8b")   # weak model -> the persona-swap
+# payload actually moves money. Try qwen3:latest to watch a stronger model resist the crude ones.
 BANK_USER = os.getenv("BANK_USER", "krishna")
 BANK_PWD  = os.getenv("BANK_PWD",  "happy123$")
 
