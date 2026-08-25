@@ -53,6 +53,7 @@ If Ollama/bank are UNREACHABLE, your WireGuard isn't connected.
 | `m8_lab02_tool_misuse.py` | 02 — Tool Misuse (SQLi / IDOR / overdraw) | `hermes3:8b` |
 | `m8_lab03_memory_poisoning.py` | 03 — Memory & Context Poisoning | `llama3.1:8b` |
 | `m8_lab04_insecure_inter_agent.py` | 04 — Insecure Inter-Agent Comms | `hermes3:8b` |
+| `m8_lab05_kill_switch.py` | 05 — Rogue Agent & Kill-Switch Design | `hermes3:8b` |
 
 Pick the model per lab without editing code:
 ```powershell

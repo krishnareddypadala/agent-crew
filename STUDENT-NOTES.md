@@ -182,6 +182,24 @@ inter-agent messages; the privileged agent must verify the *end user's* authorit
 
 ---
 
+## Lab 05 — Rogue Agent & Kill-Switch Design  (`m8_lab05_kill_switch.py`)
+A subverted automation agent is told to DRAIN the account in a loop. Run it **twice**:
+```
+set KILL_SWITCH=off
+python m8_lab05_kill_switch.py     # rogue loops 7x200 -> account drained to NEGATIVE (-70)
+```
+```
+set KILL_SWITCH=on
+python m8_lab05_kill_switch.py     # kill-switch TRIPS after the session cap -> halted (moved 400, not 1400)
+```
+The kill-switch is a **circuit breaker in the tool layer** the model can't talk past:
+`PER_TXN_CAP` / `SESSION_CAP` (cumulative) / `MAX_TXNS` / `ALLOWLIST`, plus agent `max_iter`
+(loop cap), crew `max_rpm` (rate cap), and `EMERGENCY_STOP=on` (operator panic button).
+**Watch the rogue's final answer try to dodge the cap by splitting into smaller transfers** —
+that's exactly why the *cumulative* cap + count cap beat a per-transfer cap alone.
+
+---
+
 ## The through-line (say it every lab)
 - The **tools** are the risk surface — an agent can *act*, not just talk.
 - Treat every **tool input** and every **tool output** as untrusted.
