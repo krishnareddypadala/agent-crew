@@ -21,6 +21,10 @@ The bank and the LLM run on the lab server; your machine only runs the Python.
 - Check everything: `python m8_0_verify.py`  → all four gates should say **PASS**.
 - Run labs with the venv's Python, e.g. `C:\crewenv\Scripts\python.exe m8_1_bankbot.py`.
 
+> 🔄 **Reset the bank anytime** (drained/negative balances, need a clean start): open
+> **http://10.10.0.31:8090/resetdb.php**, type your name, click **Reset bank to seed**.
+> Restores all accounts + Lab 03 feedback, and logs who reset.
+
 **Shared services (over WireGuard):**
 - LLM (Ollama): `http://10.10.0.3:11434`
 - Bank API: `http://10.10.0.31:8090`
