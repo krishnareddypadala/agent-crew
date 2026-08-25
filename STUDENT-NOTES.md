@@ -204,6 +204,15 @@ that's exactly why the *cumulative* cap + count cap beat a per-transfer cap alon
 
 ---
 
+## Lab 06 — OWASP Top 10 for Agentic AI (capstone)  (`m8_lab06_owasp_capstone.md`)
+Place everything you broke in Labs 01–05 onto the **OWASP Agentic (T1–T15)** and **LLM Top-10
+(2025)** threat IDs, then take the defense checklist. Includes stretch demos the bank still
+exposes (verified): **RCE** `GET /api/v2/tools/exec?cmd=id`, **SSRF** `/api/v2/tools/fetch`,
+**XXE** `/api/v2/register/xml`, and **system-prompt leakage**. Full mapping table + checklist in
+**`m8_lab06_owasp_capstone.md`**.
+
+---
+
 ## The through-line (say it every lab)
 - The **tools** are the risk surface — an agent can *act*, not just talk.
 - Treat every **tool input** and every **tool output** as untrusted.

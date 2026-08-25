@@ -54,6 +54,7 @@ If Ollama/bank are UNREACHABLE, your WireGuard isn't connected.
 | `m8_lab03_memory_poisoning.py` | 03 — Memory & Context Poisoning | `llama3.1:8b` |
 | `m8_lab04_insecure_inter_agent.py` | 04 — Insecure Inter-Agent Comms | `hermes3:8b` |
 | `m8_lab05_kill_switch.py` | 05 — Rogue Agent & Kill-Switch Design | `hermes3:8b` |
+| `m8_lab06_owasp_capstone.md` | 06 — OWASP Top 10 for Agentic AI (capstone, reading) | — |
 
 Pick the model per lab without editing code:
 ```powershell
