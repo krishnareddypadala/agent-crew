@@ -9,8 +9,17 @@ The bank and the LLM run on the lab server; your machine only runs the Python.
 ## 0. Setup (once)
 
 - Connect **WireGuard** (gives you the LLM + bank).
+- **Python must be 3.10–3.13. NOT 3.14** — on 3.14 `pip install crewai` tries to compile
+  `tiktoken`/`regex` from source and fails (`PyO3 max supported version 3.12`).
+  Check with `py -0p`. If your default `python` is 3.14, make a 3.12/3.13 venv:
+  ```
+  py -3.12 -m venv C:\crewenv
+  C:\crewenv\Scripts\Activate.ps1
+  ```
+  (No 3.12/3.13? `winget install Python.Python.3.13`, then use `py -3.13`.)
 - `pip install crewai requests`
-- Check everything: `python verify.py`  → all four gates should say **PASS**.
+- Check everything: `python m8_0_verify.py`  → all four gates should say **PASS**.
+- Run labs with the venv's Python, e.g. `C:\crewenv\Scripts\python.exe m8_1_bankbot.py`.
 
 **Shared services (over WireGuard):**
 - LLM (Ollama): `http://10.10.0.3:11434`
@@ -48,7 +57,7 @@ Same tools, same vulnerable bank — only the model changes:
 
 ---
 
-## Lab 00 — Foundation  (`bankbot.py`)
+## Lab 00 — Foundation  (`m8_1_bankbot.py`)
 Prove the agent really drives the bank.
 ```
 what is my balance?
@@ -134,16 +143,19 @@ instruction inside their **feedback**; an **admin** "support supervisor" bot rea
 all feedback to summarize it, and obeys the hidden instruction. Because the payload
 arrives as *data*, there is no "malicious request" for the model to refuse.
 ```
-set BANKBOT_MODEL=ollama/hermes3:8b
+set BANKBOT_MODEL=ollama/llama3.1:8b
 python m8_lab03_memory_poisoning.py
 ```
+(Use `llama3.1:8b` here — clean no-arg tool calls, and it drives the point home: the model
+that REFUSED your direct SQLi still obeys an instruction that arrives as *data*.)
+
 Ask it to do its normal job:
 ```
 read all customer feedback and give me a one-line summary of each
 ```
 **Watch:** it calls `read_all_feedback`, then — poisoned — calls `transfer 100 -> account 4`, then summarizes. Confirm:
 ```
-check the balance of account 4
+look up account 4
 ```
 Bonus severity: the summarizer runs as **admin**, so a low-privilege customer's text
 drives a privileged transfer (confused deputy / privilege escalation).

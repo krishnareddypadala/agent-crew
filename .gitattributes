@@ -1,0 +1,2 @@
+# Keep shell scripts LF so bash works on macOS/Linux even when authored on Windows.
+*.sh text eol=lf

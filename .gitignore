@@ -1,0 +1,16 @@
+# virtualenv - NEVER commit this; it's machine-specific and not portable.
+.venv/
+venv/
+crewenv/
+
+# python cruft
+__pycache__/
+*.pyc
+*.pyo
+
+# local secrets / overrides
+.env
+
+# scratch
+*.log
+/tmp/
