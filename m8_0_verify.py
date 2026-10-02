@@ -11,17 +11,33 @@ def get(url, data=None, timeout=60):
     return json.loads(u.urlopen(req, timeout=timeout).read())
 
 ok = True
-# 1) Python version (3.10+; 3.10-3.13 is the tested range)
+# 0) show which interpreter is actually running (the usual cause of a bad run:
+#    not the venv -> you are on system Python 3.14)
+print(f"[INFO] interpreter: {sys.executable}")
+
+# 1) Python version: crewai requires 3.10-3.13. Python 3.14+ CANNOT install crewai
+#    (tiktoken/regex/PyO3 have no 3.14 wheels), so it is a hard FAIL here.
+#    setup.ps1 builds a 3.10-3.13 venv for you - run it, then activate the venv.
 v = sys.version_info
-p = v.major == 3 and v.minor >= 10
-note = "" if v.minor <= 13 else "  (newer than tested 3.10-3.13; ok if crewai imports below)"
-print(f"[{'PASS' if p else 'FAIL'}] Python {v.major}.{v.minor} (need 3.10+){note}"); ok &= p
+p = (v.major == 3 and 10 <= v.minor <= 13)
+if p:
+    print(f"[PASS] Python {v.major}.{v.minor} (supported 3.10-3.13)")
+elif v.major == 3 and v.minor >= 14:
+    print(f"[FAIL] Python {v.major}.{v.minor} - crewai does NOT support 3.14+.")
+    print(f"       Build the venv (installs a 3.10-3.13 interpreter if needed):")
+    print(f"           .\\setup.ps1                       (then)")
+    print(f"           .\\.venv\\Scripts\\Activate.ps1      python m8_0_verify.py"); ok = False
+else:
+    print(f"[FAIL] Python {v.major}.{v.minor} - need 3.10-3.13. Run .\\setup.ps1"); ok = False
 
 # 2) CrewAI import
 try:
     import crewai; print(f"[PASS] crewai {crewai.__version__}")
 except Exception as e:
-    print(f"[FAIL] crewai import: {e}"); ok = False
+    print(f"[FAIL] crewai import: {e}")
+    print(f"       you are not in the venv. Run .\\setup.ps1 (once), then:")
+    print(f"           .\\.venv\\Scripts\\Activate.ps1")
+    ok = False
 
 # 3) Ollama reachable + tool-calling (make-or-break)
 try:
